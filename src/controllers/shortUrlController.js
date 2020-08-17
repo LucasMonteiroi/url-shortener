@@ -4,12 +4,13 @@ const shortUrlSchema = require('../models/shortUrl');
 class ShortUrlController {
   async getAll() {
     const shortUrls = await shortUrlSchema.find();
+    if (shortUrls == null) return [];
     return shortUrls;
   }
 
   async create(req, res) {
-    await shortUrlSchema.create({ full: req.body.fullUrl });
-    return res.redirect('/');
+    const newShort = await shortUrlSchema.create({ full: req.body.fullUrl });
+    return res.json({ newShort });
   }
 
   async getByShortUrl(req, res) {
